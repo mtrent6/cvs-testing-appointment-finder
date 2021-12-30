@@ -11,6 +11,10 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import axios from "axios";
+import LoadingButton from "@mui/lab/LoadingButton";
+
+// Request URL: https://www.cvs.com/RETAGPV3/MCscheduler/V1/storeScheduler?addressLine=22201&mileRadius=100&maxCount=25
 
 export const App = () => {
   useEffect(() => {}, []);
@@ -18,6 +22,19 @@ export const App = () => {
   const [phone, setPhone] = useState();
   const [zipCode, setZipCode] = useState();
   const [provider, setProvider] = useState();
+  const [loading, setLoading] = useState(false);
+  const [clinics, setClinics] = useState([]);
+
+  const fetchClinics = async () => {
+    setLoading(true);
+    const clinics = await axios.post(
+      "https://www.cvs.com/RETAGPV3/MCscheduler/V1/storeScheduler",
+      null,
+      { params: { addressLine: 22201, mileRadius: 100, maxCount: 25 } }
+    );
+    setLoading(false);
+    console.log(clinics);
+  };
 
   const handlePhoneChange = (event) => {
     setPhone(event.target.value);
@@ -43,7 +60,7 @@ export const App = () => {
           color: "#E1E5F2",
           textAlign: "left",
           paddingLeft: "5px",
-          borderRadius: '2px',
+          borderRadius: "2px",
         }}
       >
         CVS Appointment Finder 🥸🥴😈
@@ -71,7 +88,7 @@ export const App = () => {
             style={{
               display: "flex",
               flexDirection: "column",
-              width: "20%",
+              width: "15%",
               height: "100%",
             }}
           >
@@ -112,8 +129,16 @@ export const App = () => {
                 </MenuItem>
               </Select>
             </FormControl>
-            {zipCode}
-            {phone}
+            <div style={{ paddingBottom: "10px" }}></div>
+            <LoadingButton
+              onClick={fetchClinics}
+              loading={loading}
+              disabled={!(phone && provider && zipCode)}
+              loadingIndicator="Loading..."
+              variant="outlined"
+            >
+              Fetch data
+            </LoadingButton>
           </div>
         </div>
       </Box>
