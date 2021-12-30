@@ -14,8 +14,11 @@ module.exports = {
 			const sql = `INSERT INTO user (Email, Carrier) VALUES ('${email}', '${carrier}')`;
 
 			connection.query(sql, function (error, results, fields) {
-					if (error) throw error;
-					console.log(results);
+					if (error) {
+            connection.rollback(function() {
+              throw error;
+            })
+          }
 			});
 			
 			connection.end();
