@@ -1,4 +1,5 @@
 const express = require('express')
+const { addUser } = require('./db')
 const app = express()
 const port = 8000
 
@@ -8,4 +9,5 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
+  addUser('andrewf4@vt.edu', 'Sprint');
 })
