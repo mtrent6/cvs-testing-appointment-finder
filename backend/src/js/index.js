@@ -9,5 +9,5 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
-  addUser('andrewf4@vt.edu', 'Sprint');
+  addUser('fake', 'Sprint');
 })

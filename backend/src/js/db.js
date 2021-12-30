@@ -7,20 +7,24 @@ var connection = mysql.createConnection({
     database : 'cvsTesting'
   });
 
+var sqlQuery = function(sql) {
+  connection.connect();
+
+  connection.query(sql, function (error, results, fields) {
+    if (error) {
+      connection.rollback(function() {
+        throw error;
+      })
+    }
+    console.log(results);
+  });
+
+  connection.end();
+}
+
 module.exports = {
     addUser: function (email, carrier) {
-			connection.connect();
-			
 			const sql = `INSERT INTO user (Email, Carrier) VALUES ('${email}', '${carrier}')`;
-
-			connection.query(sql, function (error, results, fields) {
-					if (error) {
-            connection.rollback(function() {
-              throw error;
-            })
-          }
-			});
-			
-			connection.end();
+      sqlQuery(sql);
     }
 }
