@@ -5,14 +5,15 @@ var cors = require('cors')
 app.use(cors())
 const port = 8000
 
+app.use(express.json());
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
 app.post('/addUser', (req, res) => {
   console.log(req.body);
-  const obj = JSON.parse(req.body);
-  console.log(obj);
+  res.send(req.body);
 })
 
 app.listen(port, () => {
