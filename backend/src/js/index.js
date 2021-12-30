@@ -13,7 +13,10 @@ app.get('/', (req, res) => {
 
 app.post('/addUser', (req, res) => {
   console.log(req.body);
-  addUser(req.body.phone, req.body.provider);
+  if (!req.body.phone || !req.body.carrier) {
+    throw new Error('Bad Request, must contain valid phone and provider');
+  }
+  addUser(req.body.phone, req.body.carrier); 
   res.send(req.body);
 })
 

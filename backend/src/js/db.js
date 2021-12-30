@@ -8,18 +8,12 @@ var connection = mysql.createConnection({
   });
 
 var sqlQuery = function(sql) {
-  connection.connect();
-
   connection.query(sql, function (error, results, fields) {
-    if (error) {
-      connection.rollback(function() {
-        throw error;
-      })
-    }
-    console.log(results);
+  }).on('error', function(err) {
+    console.log(err);
+  }).on('result', function(res) {
+    console.log(res);
   });
-
-  connection.end();
 }
 
 module.exports = {
