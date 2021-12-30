@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 
 app.post('/addUser', (req, res) => {
   console.log(req.body);
-  addUser(req.phone, req.provider);
+  addUser(req.body.phone, req.body.provider);
   res.send(req.body);
 })
 
