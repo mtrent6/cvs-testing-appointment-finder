@@ -12,11 +12,13 @@ app.get('/', (req, res) => {
 })
 
 app.post('/addUser', (req, res) => {
-  console.log(req.body);
-  if (!req.body.phone || !req.body.carrier) {
+  console.log(req?.body);
+  if (!req?.body?.phone || !req?.body?.carrier) {
     throw new Error('Bad Request, must contain valid phone and provider');
   }
-  addUser(req.body.phone, req.body.carrier); 
+  let id = addUser(req.body.phone, req.body.carrier);
+  console.log(id);
+  // add entries to clinic DB using ID
   res.send(req.body);
 })
 
