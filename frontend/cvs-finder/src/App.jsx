@@ -14,8 +14,6 @@ import Select from "@mui/material/Select";
 import axios from "axios";
 import LoadingButton from "@mui/lab/LoadingButton";
 
-// Request URL: https://www.cvs.com/RETAGPV3/MCscheduler/V1/storeScheduler?addressLine=22201&mileRadius=100&maxCount=25
-
 export const App = () => {
   useEffect(() => {}, []);
 
@@ -30,10 +28,19 @@ export const App = () => {
     const clinics = await axios.post(
       "https://www.cvs.com/RETAGPV3/MCscheduler/V1/storeScheduler",
       null,
-      { params: { addressLine: 22201, mileRadius: 100, maxCount: 25 } }
+      { params: { addressLine: zipCode, mileRadius: 100, maxCount: 25 } }
     );
     setLoading(false);
-    console.log(clinics);
+
+    const details = clinics.data?.response?.clinicDetails;
+    console.log(details);
+    const reducedClinics = details.map((clinic) => {
+      return {
+        name: clinic.clinicName,
+        id: clinic.clinicId,
+      };
+    });
+    setClinics(reducedClinics);
   };
 
   const handlePhoneChange = (event) => {
@@ -142,6 +149,24 @@ export const App = () => {
           </div>
         </div>
       </Box>
+      <div style={{ paddingTop: "40px" }}>
+        {clinics.length > 0 && (
+          <div
+            style={{
+              paddingBottom: "20px",
+              fontSize: 20,
+              fontFamily: "Helvetica-Bold",
+            }}
+          >
+            Here are the 25 CVS Clinics closest to you, we'll send you a text
+            when one of them has an appointment opening, make sure to go to CVS
+            quickly to book your appointment:
+          </div>
+        )}
+        {clinics.map((clinic) => {
+          return <div>{clinic.name}</div>;
+        })}
+      </div>
     </div>
   );
 };
